@@ -1,0 +1,51 @@
+from playwright.sync_api import expect
+import time
+
+class InventoryPage:
+    def __init__(self, page):
+        self.page = page
+        self.title = page.locator(".title")
+        self.inventory_items = page.locator(".inventory_item")
+        self.cart_icon = page.locator(".shopping_cart_link")
+
+    def is_loaded(self):
+        # Wait for the page title to appear
+        self.page.wait_for_selector(".title")
+        return self.title.inner_text().strip() == "Products"
+
+    def get_item_count(self):
+        self.page.wait_for_selector(".inventory_item")
+        return self.inventory_items.count()
+
+    def get_first_product_name(self):
+        # Wait until the Products title confirms page loaded
+        self.page.wait_for_selector(".title:has-text('Products')")
+
+        # Then wait for the first inventory item to appear
+        expect(self.inventory_items.first).to_be_visible(timeout=10000)
+        expect(self.inventory_items.first.locator(".inventory_item_name")).to_be_visible(timeout=10000)
+
+        name = self.inventory_items.first.locator(".inventory_item_name").text_content()
+        if not name:
+            raise Exception("Failed to retrieve product name from inventory page")
+        return name.strip()
+
+    def open_first_item(self):
+        # Ensure the list is ready
+        self.page.wait_for_selector(".inventory_item")
+        # Click the title link of the first product specifically
+        self.inventory_items.first.locator("[data-test*='title-link']").click()
+
+    def add_to_cart(self):
+        # Add first available item via add-to-cart button
+        self.page.wait_for_selector("button[data-test^='add-to-cart']")
+        self.page.locator("button[data-test^='add-to-cart']").first.click()
+
+    def add_first_item_to_cart(self):
+        # Add specifically the first product in the list
+        self.page.wait_for_selector(".inventory_item")
+        self.inventory_items.nth(0).locator("button[data-test^='add-to-cart']").click()
+
+    def go_to_cart(self):
+        # Click cart icon to open the cart
+        self.cart_icon.click()
