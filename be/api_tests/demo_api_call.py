@@ -3,7 +3,7 @@ import requests
 BASE_URL = "http://127.0.0.1:8000"
 
 def test_api_endpoints():
-    # 1️⃣ Test login
+    # 1 Test login
     login_payload = {
         "username": "standard_user",
         "password": "secret_sauce"
@@ -11,11 +11,11 @@ def test_api_endpoints():
     login_res = requests.post(f"{BASE_URL}/login", json=login_payload)
     print("Login:", login_res.json())
 
-    # 2️⃣ Test get product
+    # 2 Test get product
     product_res = requests.get(f"{BASE_URL}/product/Sauce%20Labs%20Backpack")
     print("Product:", product_res.json())
 
-    # 3️⃣ Test add to cart
+    # 3 Test add to cart
     add_payload = {"item_name": "Sauce Labs Backpack"}
     add_res = requests.post(f"{BASE_URL}/cart/add", json=add_payload)
     print("Add to cart:", add_res.json())
