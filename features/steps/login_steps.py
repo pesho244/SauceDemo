@@ -1,9 +1,5 @@
 from behave import given, when, then
 
-# @given("I am on the login page")
-# def step_open_login(context):
-#     context.login_page.navigate()
-
 @when('I login with username "{username}" and password "{password}"')
 def step_login(context, username, password):
     context.login_page.login(username, password)
