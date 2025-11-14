@@ -1,4 +1,3 @@
-# features/steps/inventory_steps.py
 from behave import then
 
 @then('I should see the title "{title}"')
@@ -12,4 +11,3 @@ def step_count_products(context):
 @then("I should see the product detail page")
 def step_verify_product_detail(context):
     assert context.product_page.get_title() != "", "Product title missing!"
-    # test
