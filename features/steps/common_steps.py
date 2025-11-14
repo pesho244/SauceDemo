@@ -58,9 +58,13 @@ def step_check_message(context, expected):
     actual = context.checkout_page.get_complete_message()
     assert expected in actual, f"Expected message to contain '{expected}' but got '{actual}'"
 
+### For failing test
+# @then('I should see "{text}" message')
+# def step_verify_message(context, text):
+#     assert False  # Force failure
+
+
 @then("I should see the same product in the cart")
 def step_verify_cart_product(context):
     # Temporarily skip verification until we capture product name
     print("Skipping product name verification for now.")
-
-

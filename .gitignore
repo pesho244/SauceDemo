@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.env/
+
+# Logs
+*.log
+
+# Playwright state
+state.json
+
+# Screenshots
+fe/screenshots/
+be/screenshots/
+
+# Behave temporary files
+reports/
+*.tmp
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs (PyCharm)
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
