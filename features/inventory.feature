@@ -1,12 +1,12 @@
 Feature: Inventory Page
 
   Background:
-    Given I am logged in as "standard_user" with password "secret_sauce"
+    Given the user is logged in as "env" with password "env"
 
-  Scenario: Verify inventory page loads correctly
-    Then I should see the title "Products"
-    And there should be more than 0 products displayed
+  Scenario: Verify inventory page loads
+    Then the user should see the title "Products"
+    And the user should see more than 0 products
 
   Scenario: Open first product
-    When I open the first product
-    Then I should see the product detail page
+    When the user opens the first product
+    Then the user should see the product detail page

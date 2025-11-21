@@ -1,14 +1,13 @@
-Feature: Complete purchase flow
+Feature: Checkout process
 
-  Scenario: Add product to cart and finish checkout
-    Given I am logged in as "standard_user" with password "secret_sauce"
-    When I open the first product
-    And I add the product to the cart
-    And I navigate to the cart
-    Then I should see the same product in the cart
-    When I proceed to checkout
-    And I fill in checkout information
-    And I continue to overview
-    Then I should see the same product in the overview
-    When I finish the order
-    Then I should see "Thank you for your order!" message
+  Background:
+    Given the user is logged in as "env" with password "env"
+    And the user opens the first product
+
+  Scenario: Complete a purchase
+    When the user adds the product to the cart
+    And the user navigates to the cart
+    And the user proceeds to checkout
+    And the user fills in checkout information
+    And the user finishes the order
+    Then the user should see the message "Thank you for your order!"

@@ -1,0 +1,33 @@
+# config/config.yaml
+
+environment: "local"   # local | dev | qa | staging | prod
+
+urls:
+  base: "https://www.saucedemo.com"
+  api: "http://localhost:8000"
+
+credentials:
+  username_env: "SAUCE_USERNAME"
+  password_env: "SAUCE_PASSWORD"
+
+
+browser:
+  headless: false
+  slowmo: 50
+  viewport:
+    width: 1280
+    height: 720
+
+timeouts:
+  default: 15000
+  page_load: 30000
+
+paths:
+  screenshots: "fe/screenshots"
+  logs: "fe/logs"
+
+data:
+  default_product: "Sauce Labs Bolt T-Shirt"
+
+ci:
+  enabled: false
