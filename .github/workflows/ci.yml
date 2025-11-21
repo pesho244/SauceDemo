@@ -14,6 +14,9 @@ jobs:
       SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
       SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
 
+      SAUCE_API_USERNAME: ${{ secrets.SAUCE_API_USERNAME }}
+      SAUCE_API_PASSWORD: ${{ secrets.SAUCE_API_PASSWORD }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -47,7 +50,6 @@ jobs:
         
         echo "Running behavior tests..."
         behave features/purchase.feature --no-capture || true
-
         
         echo "Stopping backend server..."
         kill $SERVER_PID
