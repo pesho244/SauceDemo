@@ -33,16 +33,23 @@ def before_all(context):
 
     context.page = context.browser.new_page()
 
-
 def after_all(context):
+    # Prevent cleanup errors from failing CI
     try:
-        if hasattr(context, 'browser'):
-            context.browser.close()
-        if hasattr(context, 'playwright'):
-            context.playwright.stop()
-    except Exception as e:
-        print(f"Error in after_all: {e}")
+        if getattr(context, "browser", None):
+            try:
+                context.browser.close()
+            except Exception:
+                pass
 
+        if getattr(context, "playwright", None):
+            try:
+                context.playwright.stop()
+            except Exception:
+                pass
+
+    except Exception:
+        pass  # swallow everything
 
 def after_step(context, step):
     if step.status == "failed":
