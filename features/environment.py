@@ -1,6 +1,5 @@
 from behave import fixture
 from playwright.sync_api import sync_playwright
-import time
 import os
 from datetime import datetime
 import yaml
@@ -19,51 +18,73 @@ def before_all(context):
     if not context.username or not context.password:
         raise Exception("❌ Missing required environment variables SAUCE_USERNAME / SAUCE_PASSWORD")
 
-    # Determine CI mode
+    # Detect CI to force headless there
     is_ci = os.getenv("CI") == "true"
 
-    # Launch browser
     browser_cfg = context.config["browser"]
     context.playwright = sync_playwright().start()
-
     context.browser = context.playwright.chromium.launch(
         headless=True if is_ci else browser_cfg["headless"],
         slow_mo=browser_cfg["slowmo"]
     )
-
     context.page = context.browser.new_page()
 
+
 def after_all(context):
-    # Prevent cleanup errors from failing CI
+    # Make sure cleanup never fails the run (especially in CI)
     try:
-        if getattr(context, "browser", None):
+        # Try closing page if it exists
+        page = getattr(context, "page", None)
+        if page is not None:
             try:
-                context.browser.close()
+                page.close()
             except Exception:
                 pass
 
-        if getattr(context, "playwright", None):
+        # Try closing browser if it exists
+        browser = getattr(context, "browser", None)
+        if browser is not None:
             try:
-                context.playwright.stop()
+                browser.close()
+            except Exception:
+                pass
+
+        # Try stopping Playwright if it exists
+        pw = getattr(context, "playwright", None)
+        if pw is not None:
+            try:
+                pw.stop()
             except Exception:
                 pass
 
     except Exception:
-        pass  # swallow everything
+        # Swallow absolutely everything in teardown
+        # so behave doesn't mark scenario as cleanup_error
+        pass
+
 
 def after_step(context, step):
     if step.status == "failed":
-        os.makedirs("fe/screenshots", exist_ok=True)
+        try:
+            page = getattr(context, "page", None)
+            if page is None:
+                return
 
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            os.makedirs("fe/screenshots", exist_ok=True)
 
-        # Clean filename for Windows
-        filename = step.name
-        for bad in ['"', "'", ":", "/", "\\", "*", "?", "<", ">", "|"]:
-            filename = filename.replace(bad, "")
-        filename = filename.replace(" ", "_")
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        path = f"fe/screenshots/{filename}_{timestamp}.png"
+            # Clean filename for Windows
+            filename = step.name
+            for bad in ['"', "'", ":", "/", "\\", "*", "?", "<", ">", "|"]:
+                filename = filename.replace(bad, "")
+            filename = filename.replace(" ", "_")
 
-        context.page.screenshot(path=path)
-        print(f"\n📸 Screenshot saved to: {path}\n")
+            path = f"fe/screenshots/{filename}_{timestamp}.png"
+
+            page.screenshot(path=path)
+            print(f"\n📸 Screenshot saved to: {path}\n")
+
+        except Exception as e:
+            # Do NOT fail test if screenshot fails
+            print(f"⚠️ Failed to capture screenshot: {e}")
