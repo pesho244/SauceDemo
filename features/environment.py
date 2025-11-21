@@ -12,20 +12,25 @@ def load_config():
 def before_all(context):
     context.config = load_config()
 
-    # Load credentials from environment
+    # Load credentials from environment variables
     context.username = os.getenv(context.config["credentials"]["username_env"])
     context.password = os.getenv(context.config["credentials"]["password_env"])
 
     if not context.username or not context.password:
         raise Exception("❌ Missing required environment variables SAUCE_USERNAME / SAUCE_PASSWORD")
 
+    # Determine CI mode
+    is_ci = os.getenv("CI") == "true"
+
     # Launch browser
     browser_cfg = context.config["browser"]
     context.playwright = sync_playwright().start()
+
     context.browser = context.playwright.chromium.launch(
-        headless=browser_cfg["headless"],
+        headless=True if is_ci else browser_cfg["headless"],
         slow_mo=browser_cfg["slowmo"]
     )
+
     context.page = context.browser.new_page()
 
 
@@ -45,7 +50,7 @@ def after_step(context, step):
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
-        # sanitize filename
+        # Clean filename for Windows
         filename = step.name
         for bad in ['"', "'", ":", "/", "\\", "*", "?", "<", ">", "|"]:
             filename = filename.replace(bad, "")
