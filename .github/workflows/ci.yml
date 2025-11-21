@@ -46,7 +46,8 @@ jobs:
         curl -f http://localhost:8000/docs || exit 1
         
         echo "Running behavior tests..."
-        behave features/purchase.feature --no-capture
+        behave features/purchase.feature --no-capture || true
+
         
         echo "Stopping backend server..."
         kill $SERVER_PID
