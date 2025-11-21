@@ -30,9 +30,13 @@ def step_login(context, username, password):
 
     time.sleep(0.5)
 
+from behave import given, when
+
+@given("the user opens the first product")
 @when("the user opens the first product")
 def step_open_first(context):
     context.inventory_page.open_first_item()
+
 
 @when("the user adds the product to the cart")
 def step_add_product(context):
