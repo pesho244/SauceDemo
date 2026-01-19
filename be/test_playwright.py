@@ -4,5 +4,5 @@ with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
     page = browser.new_page()
     page.goto("https://www.saucedemo.com")
-    print("✅ Page loaded! Title:", page.title())
+    print("Page loaded! Title:", page.title())
     browser.close()

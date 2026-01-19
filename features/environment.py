@@ -16,7 +16,7 @@ def before_all(context):
     context.password = os.getenv(context.config["credentials"]["password_env"])
 
     if not context.username or not context.password:
-        raise Exception("❌ Missing required environment variables SAUCE_USERNAME / SAUCE_PASSWORD")
+        raise Exception("Missing required environment variables SAUCE_USERNAME / SAUCE_PASSWORD")
 
     # Detect CI to force headless there
     is_ci = os.getenv("CI") == "true"

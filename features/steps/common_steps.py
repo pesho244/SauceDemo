@@ -29,9 +29,6 @@ def step_login(context, username, password):
     context.checkout_page = CheckoutPage(context.page)
 
     time.sleep(0.5)
-
-from behave import given, when
-
 @given("the user opens the first product")
 @when("the user opens the first product")
 def step_open_first(context):
