@@ -83,8 +83,8 @@ def after_step(context, step):
             path = f"fe/screenshots/{filename}_{timestamp}.png"
 
             page.screenshot(path=path)
-            print(f"\n📸 Screenshot saved to: {path}\n")
+            print(f"\n Screenshot saved to: {path}\n")
 
         except Exception as e:
             # Do NOT fail test if screenshot fails
-            print(f"⚠️ Failed to capture screenshot: {e}")
+            print(f"Failed to capture screenshot: {e}")
