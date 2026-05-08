@@ -18,3 +18,5 @@ def step_verify_inventory(context):
 def step_verify_error(context, error_text):
     message = context.login_page.error_message.inner_text()
     assert error_text in message, f"Expected '{error_text}', got '{message}'"
+
+# line for testing cicd
