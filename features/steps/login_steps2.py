@@ -10,3 +10,5 @@ def step_login(context, username, password):
 @then('the user is redirected to the inventory page')
 def step_verify_inventory(context):
     assert context.inventory_page.is_loaded(), "Inventory page did not load!"
+
+#new line for commit and push
