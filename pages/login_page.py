@@ -13,3 +13,26 @@ class LoginPage:
         self.username_input.fill(username)
         self.password_input.fill(password)
         self.login_button.click()
+
+
+    # def login(self):
+    #     self.page.goto("https://datatables.net/examples/index")
+    #
+    # def zero_config_page(self):
+    #     self.zeroconfig = page.text_content("Zero configuration").click()
+    #
+    # def table_records(self):
+    #     return self.page.query_selector_all("tbody tr")
+    #
+    # def age_sorting(self):
+    #     self.page.get_by_role("dt-column-title", name="Age").click()
+    #
+    #
+    # def first_person(self):
+    #     self.page.query_selector("tbody tr:nth-child(1)")
+    #     if first_person is bigger than 65:
+    #         return True
+    #     else:
+    #         return False
+
+

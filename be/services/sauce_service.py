@@ -1,5 +1,5 @@
 # be/services/sauce_service.py
-
+# backend automation service that contains all Playwright browser interactions
 import os
 import logging
 from datetime import datetime
