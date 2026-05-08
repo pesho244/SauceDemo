@@ -1,0 +1,33 @@
+import requests
+from behave import given
+
+BASE_URL = "http://localhost:8000"
+
+@given("I am logged in using API")
+def step_login_via_api(context):
+    payload = {
+        "username": "standard_user",
+        "password": "secret_sauce"
+    }
+
+    # Call your backend login API
+    response = requests.post(f"{BASE_URL}/login", json=payload)
+    assert response.status_code == 200, "API login failed"
+
+    # Extract cookies from API response
+    cookies = response.cookies.get_dict()
+
+    # Inject cookies into Playwright browser context
+    context.page.context.add_cookies([
+        {
+            "name": name,
+            "value": value,
+            "domain": "www.saucedemo.com",
+            "path": "/",
+            "httpOnly": False,
+            "secure": False
+        }
+        for name, value in cookies.items()
+    ])
+
+    print("Logged in using API, cookies injected.")
